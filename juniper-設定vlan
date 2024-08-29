@@ -56,3 +56,17 @@
   #清除table
   clear ethernet-switching table
 
+#設定STP
+  set protocol rstp
+  set protocol rstp  bridge-priority 4096(設定交換器優先值)
+  set protocol rstp max-age 20(bpdu老化)
+  set protocol rstp forward-delay 15
+  set protocol rstp hell-time 2
+  set interfaces ge-0/0/1 unit 0 family ethernet-switching interface-mode access
+
+##設定BPDU protection(防止不受信任的裝置參與STP)
+  set int ge-0/0/0 unit 0 family ethernet-switching bpdu-block
+##設定loop detection
+  set protocols rstp interface ge-0/0/1 loop-detect
+##設定root guard
+  set protocols rstp interface ge-0/0/1 root-guard
