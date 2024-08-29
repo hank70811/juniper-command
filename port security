@@ -1,0 +1,23 @@
+##限制port所能學習到的最大mac數量
+  set int ge-0/0/1 unit 0 family ethernet-switching mac-limit 10
+##綁定mac地址到端口
+  set interface ge-0/0/1 ethernet-switching-options static-mac mac-address 00:11:22:33:44:55 vlan 11 
+##設定mac移動次數
+  set ethernet-switching-options mac-move-limit 10
+#當超過限制可對封包做不同動作
+#設定
+  set ethernet-switching-options persistent-mac-learning
+#設定dhcp snooping
+  set ethernet-switching-options dhcp-snooping
+  set ethernet-switching-options dhcp-snooping trusted interface ge-0/0/1(受信任端口才可發出dhcp offer)
+
+##設定DHCP snooping database(用來管理和驗證 DHCP Snooping 安全功能的數據庫)
+  set system services dhcp-local-server
+##將特定vlan端口設定是否要DAI(動態ARP檢測)
+  set ethernet-switching-options dynamic-arp-inspection vlan Sales
+#設定受信任的端口，就不用DAI檢查
+  set ethernet-switching-options dynamic-arp-inspection trusted-interface ge-0/0/1
+#####查看dhcp database
+  show dhcp-security binding
+
+
