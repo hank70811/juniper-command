@@ -1,3 +1,4 @@
+#單一端口
 set vlans Sales vlan-id 10
 set int ge-0/0/1 unit 0 family ethernet-switching vlan members Sales 
 commit
