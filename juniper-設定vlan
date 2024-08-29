@@ -1,5 +1,14 @@
-都需要commit
-#單一端口
+#unit 
+#指定接口的邏輯單位的
+#Juniper的接口配置允許將物理接口劃分為多個邏輯單位（或子接口），每個邏輯單位可以擁有獨立的IP地址、配置和參數。這些邏輯單位允許在一個物理接口上進行虛擬化，實現多種功能。
+#family
+#family inet 是用來指定IP協議族（Address Family）的參數
+#family inet6 配置IPv6相關的設置 地址、靜態路由、動態路由協議
+#family mpls 
+#family ethernet-switching 配置VLAN、交換端口
+#family bridge 多端口接合
+
+#單一端口vlan
   set vlans Sales vlan-id 10
   set int ge-0/0/1 unit 0 family ethernet-switching vlan members Sales 
   
