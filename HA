@@ -1,0 +1,18 @@
+#設定LACP(鍊路聚合)
+  set aggregated-devices ethernet device-count 1
+  set ae0 unit 0 family ethernet-switching vlan members default
+  set ae0 aggregated-ether-options lacp active
+  set int ge-0/0/1 ether-options 802.3ad ae0
+  set int ge-0/0/2 ether-options 802.3ad ae0
+ show int terse | match ae0
+
+#設定RTG(redundant trunk group)
+  set redundant-trunk-group group rtg1 int ae0.0 primary
+  set redundant-trunk-group group rtg1 int ge-0/0/10.0
+show redundant-trunk-group
+
+#設定GREs
+[edit chassis]
+  set redundancy graceful-switchover
+show system switchover
+[edit routing-options]
