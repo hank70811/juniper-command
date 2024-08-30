@@ -1,5 +1,6 @@
 ##限制port所能學習到的最大mac數量
   set int ge-0/0/1 unit 0 family ethernet-switching mac-limit 10
+  set ethernet-switching-options secure-access-port interface ge-0/0/2 mac-limit 5(選用?)
 ##綁定mac地址到端口
   set interface ge-0/0/1 ethernet-switching-options static-mac mac-address 00:11:22:33:44:55 vlan 11 
 ##設定mac移動次數
@@ -16,8 +17,28 @@
 ##將特定vlan端口設定是否要DAI(動態ARP檢測)
   set ethernet-switching-options dynamic-arp-inspection vlan Sales
 #設定受信任的端口，就不用DAI檢查
+
   set ethernet-switching-options dynamic-arp-inspection trusted-interface ge-0/0/1
 #####查看dhcp database
   show dhcp-security binding
 
+#設定端口的action(遇到違規後觸發動作)
+  set  ethernet-switching-options secure-access-port interface ge-0/0/2 mac-limit 5
+  set  ethernet-switching-options secure-access-port int ge-0/0/0 violation-action shutdown
+#當發生因安全違規而關閉端口，可設定多久內自動恢復
+  set ethernet-switching-options secure-access-port int ge-0/0/1 recovery-timeout 300
+
+#當端口進入冷卻等待recovery可以設定clear，馬上讓端口運行
+  clear ethernet-switching recovery-timeout
+
+==============================================================
+##防火牆設定
+  show filter-limit-MAAC-ge-0/0/1
+##設定過濾條件
+  set firewall family ethernet-switching filter filter1 term term1 from source-address SOURCE_IP
+  set firewall family ethernet-switching filter filter1 term term2 from destination-mac-address DESTINATE_MAC
+  set firewall family ethernet-switching filter filter1 term term3 then accept
+  set firewall family ethernet-switching filter filter1 term term4 then discard
+##過濾條件設定到端口
+  set int ge-0/0/1 unit 0 family ethernet-switching filter input filter1
 
