@@ -1,0 +1,6 @@
+##為member switch升版NSSU 
+  request system software nonstop-upgrade /var/tmp/packet_name.tgz command
+#當是mix switch
+request system software nonstop-upgrade [/var/tmp/packet_name.tgz /var/tmp/packet_name.tgz] command.44
+
+show virtual-chassis vc-port
