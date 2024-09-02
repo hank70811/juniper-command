@@ -9,19 +9,18 @@
 #family bridge 多端口接合
 
 
-#單一端口vlan
+#設定vlan
   set vlans Sales vlan-id 10
-  set int ge-0/0/1 unit 0 family ethernet-switching vlan members Sales 
-  
-  
-##設定多端口vlan
   set vlans Engineers vlan-id 20
-  set interfaces ge-0/0/[0-3] unit 0 family ethernet-switching vlan members Engineers
+  
+
 ##設定trunk、access port
   set int ge-0/0/1 unit 0 family ethernet-switching port-mode access
   set int ge-0/0/1 unit 0 family ethertnet-switching vlan members 10
   set int ge-0/0/2 unit 0 family ethertnet-switching port-mode trunk
   set int ge-0/0/2 unit 0 family enthertnet-switching vlan members [10 20]
+##設定多端口vlan
+  set interfaces ge-0/0/[0-3] unit 0 family ethernet-switching vlan members Engineers
 ##設定native vlan
   set int ge-0/0/2 unit 0 family ethernet-switching port-mode trunk
   set int ge-0/0/2 unit 0 family ethernet-switching native-vlan-id 1
@@ -31,8 +30,8 @@
 當個端口都有各自的vlan後就要設定IRB interface，讓vlan互通
 [edit]
 #edit interface irb
-[edit interface irb]
 
+[edit interface irb]
 #在irb介面設定的子端口、和網關ip
   set unit 10 family inet address 192.168.10.1/24
   set unit 20 family inet address 192.168.20.1/24
